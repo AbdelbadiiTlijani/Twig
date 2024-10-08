@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    Authors List
+{% endblock %}
+
+{% block body %}
+    {% if authors is empty %}
+        <h1>Tableau vide !!!</h1>
+    {% elseif authors is not defined %}
+        <h1>Tableau non defini !!</h1>
+    {% else %}
+        <table>
+            <caption>
+                List Authors
+            </caption>
+            <thead>
+            <tr>
+                <th>Authors Image</th>
+                <th>Authors</th>
+                <th>Email</th>
+                <th>Number of books</th>
+                <th>Details</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set total_books = 0 %}
+            {% for author in authors %}
+                <tr>
+                    <td><img src="{{ asset(author.picture)}}" alt ="{{ author.username | upper }}" class="author-picture"></td>
+                    <td>{{ author.username | upper }}</td>
+                    <td>{{ author.email }}</td>
+                    <td style="text-align: center">{{ author.nb_books }}</td>
+                    <td><a href="{{ path('author.details', {id: author.id } )}}">details</a></td>
+                </tr>
+                {% set total_books = total_books + author.nb_books %}
+            {% endfor %}
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="5" style="text-align: center;">Nombre des auteurs : {{ authors | length }}</td>
+            </tr>
+            <tr>
+                <td  colspan="5" style="text-align: center;">Nombre total des livres :{{ total_books }}</td>
+            </tr>
+            </tfoot>
+        </table>
+    {% endif %}
+{% endblock %}
